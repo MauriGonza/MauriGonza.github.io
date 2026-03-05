@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mauricio González — IT Systems Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050507;
+  --surface: #0d0d12;
+  --border: #1a1a24;
+  --accent: #00ff88;
+  --accent2: #7b61ff;
+  --accent3: #ff6b35;
+  --text: #e8e6f0;
+  --muted: #5a5870;
+  --white: #ffffff;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── CURSOR ── */
+.cursor {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.18s ease;
+  opacity: 0.5;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+  backdrop-filter: blur(0px);
+}
+nav.scrolled {
+  background: rgba(5,5,7,0.9);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--white);
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 36px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 60px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+.hero-tag::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 8vw, 120px);
+  line-height: 0.88;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.hero-name .line2 {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+}
+.hero-name .accent { color: var(--accent); -webkit-text-stroke: 0; }
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--muted);
+  margin: 24px 0 40px;
+  line-height: 1.4;
+}
+.hero-title strong { color: var(--text); font-style: normal; font-weight: 700; }
+
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 14px 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: none;
+  transition: all 0.2s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-primary:hover {
+  background: var(--white);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  padding: 13px 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: none;
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Hero stats */
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  color: var(--white);
+  line-height: 1;
+}
+.stat-num span { color: var(--accent); }
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* Hero right — visual panel */
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+.hero-card {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  font-size: 11px;
+}
+.hero-card-1 {
+  top: 20%; left: 10%;
+  width: 200px;
+  animation: float1 6s ease-in-out infinite;
+}
+.hero-card-2 {
+  top: 45%; right: 10%;
+  width: 220px;
+  animation: float2 7s ease-in-out infinite;
+}
+.hero-card-3 {
+  bottom: 20%; left: 20%;
+  width: 180px;
+  animation: float1 5s ease-in-out infinite reverse;
+}
+@keyframes float1 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(10px); }
+}
+.card-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.card-value {
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+}
+.card-sub { color: var(--muted); font-size: 10px; margin-top: 4px; }
+
+.status-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 6px;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── TICKER ── */
+.ticker-wrap {
+  overflow: hidden;
+  background: var(--accent);
+  padding: 10px 0;
+  position: relative;
+}
+.ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 20s linear infinite;
+}
+.ticker-item {
+  white-space: nowrap;
+  padding: 0 32px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: var(--bg);
+}
+.ticker-item::after {
+  content: '◆';
+  margin-left: 32px;
+  opacity: 0.5;
+}
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── SECTIONS ── */
+section {
+  padding: 100px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 56px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 120px;
+}
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 5vw, 72px);
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+
+/* ── ABOUT ── */
+#about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 100px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.about-text p {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.about-text p strong {
+  color: var(--accent);
+  font-weight: 700;
+  font-style: normal;
+}
+.about-text p em {
+  color: var(--accent2);
+  font-style: italic;
+}
+
+.about-right { display: flex; flex-direction: column; gap: 16px; }
+
+.about-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 20px 24px;
+  transition: all 0.3s;
+}
+.about-card:hover {
+  border-left-color: var(--accent2);
+  transform: translateX(4px);
+}
+.about-card:nth-child(2) { border-left-color: var(--accent2); }
+.about-card:nth-child(3) { border-left-color: var(--accent3); }
+.about-card-title {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.about-card:nth-child(2) .about-card-title { color: var(--accent2); }
+.about-card:nth-child(3) .about-card-title { color: var(--accent3); }
+.about-card-text { color: var(--text); font-size: 12px; line-height: 1.6; }
+
+/* ── STACK ── */
+#stack { border-top: 1px solid var(--border); }
+
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.stack-item {
+  background: var(--bg);
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: default;
+}
+.stack-item:hover {
+  background: var(--surface);
+}
+.stack-item:hover .stack-name { color: var(--accent); }
+.stack-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+.stack-name {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.stack-item.primary .stack-name { color: var(--text); }
+.stack-item.primary { background: var(--surface); }
+
+/* ── EXPERIENCE ── */
+#experience { border-top: 1px solid var(--border); }
+
+.exp-list { display: flex; flex-direction: column; gap: 2px; }
+
+.exp-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.exp-item:hover { border-color: var(--accent); }
+
+.exp-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  padding: 28px 32px;
+  align-items: center;
+  cursor: default;
+}
+.exp-company {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+.exp-role {
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.exp-period {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+.exp-current {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 2px 8px;
+}
+.exp-body {
+  padding: 0 32px 28px;
+  border-top: 1px solid var(--border);
+}
+.exp-bullets { list-style: none; padding-top: 20px; }
+.exp-bullets li {
+  padding: 6px 0 6px 20px;
+  position: relative;
+  color: #9997b0;
+  font-size: 12px;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.exp-bullets li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 11px;
+}
+
+/* ── PROJECTS ── */
+#projects { border-top: 1px solid var(--border); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+}
+
+.project-card {
+  background: var(--bg);
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s;
+  display: flex;
+  flex-direction: column;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  transform-origin: left;
+}
+.project-card:hover::before { transform: scaleX(1); }
+.project-card:hover { background: var(--surface); }
+
+.project-card.featured {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.project-card.featured::before { background: var(--accent2); }
+
+.project-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 16px;
+  transition: color 0.3s;
+}
+.project-card:hover .project-num { color: rgba(0,255,136,0.1); }
+
+.project-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  margin-bottom: 16px;
+}
+.badge-prod {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: rgba(0,255,136,0.05);
+}
+.badge-dev {
+  color: var(--accent3);
+  border: 1px solid var(--accent3);
+  background: rgba(255,107,53,0.05);
+}
+
+.project-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.project-desc {
+  font-size: 12px;
+  color: #9997b0;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  flex: 1;
+}
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+.tag {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.project-card:hover .tag {
+  border-color: rgba(0,255,136,0.2);
+  color: var(--text);
+}
+
+/* Project visual */
+.project-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.vis-cell {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  font-size: 10px;
+}
+.vis-cell-label { color: var(--muted); font-size: 9px; letter-spacing: 0.1em; margin-bottom: 4px; }
+.vis-cell-val { color: var(--text); }
+.vis-cell.highlight { border-color: rgba(0,255,136,0.3); }
+.vis-cell.highlight .vis-cell-val { color: var(--accent); }
+
+/* ── CERTIFICATIONS ── */
+#certs { border-top: 1px solid var(--border); }
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+}
+.cert-card {
+  background: var(--bg);
+  padding: 28px 28px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.cert-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+  transform-origin: left;
+}
+.cert-card:hover { background: var(--surface); }
+.cert-card:hover::after { transform: scaleX(1); }
+.cert-issuer {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.cert-name {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.cert-year {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ── CONTACT ── */
+#contact {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 120px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.contact-glow {
+  position: absolute;
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(123,97,255,0.06) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.contact-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.contact-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(60px, 8vw, 110px);
+  line-height: 0.85;
+  color: var(--white);
+  margin-bottom: 32px;
+}
+.contact-title .outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+}
+.contact-sub {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: 48px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+.contact-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0,255,136,0.04);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* ── SCROLL ANIMATIONS ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  #hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-left { padding: 100px 24px 60px; }
+  section { padding: 80px 24px; }
+  #about { grid-template-columns: 1fr; gap: 40px; padding: 80px 24px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card.featured { grid-template-columns: 1fr; }
+  .certs-grid { grid-template-columns: 1fr 1fr; }
+  footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">MG<span>.</span>DEV</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#stack">Stack</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#certs">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="padding:0; max-width:100%;">
+  <div class="hero-left">
+    <div class="hero-tag">Available for remote work</div>
+    <h1 class="hero-name">
+      <div>MAURICIO</div>
+      <div class="line2">GONZ<span class="accent">Á</span>LEZ</div>
+    </h1>
+    <p class="hero-title">
+      <strong>IT Systems Engineer</strong> specializing in<br>
+      <em>AI automation</em>, Active Directory & GxP/FDA compliance.<br>
+      Building real systems that run in production.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-secondary">Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4<span>+</span></div>
+        <div class="stat-label">Years Exp.</div>
+      </div>
+      <div>
+        <div class="stat-num">23<span>+</span></div>
+        <div class="stat-label">Certifications</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Companies</div>
+      </div>
+      <div>
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Automations</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-card hero-card-1">
+      <div class="card-label">Current Status</div>
+      <div class="card-value"><span class="status-dot"></span>Active at Grupo Heisecke</div>
+      <div class="card-sub">FUSQUIM · Pharmaceutical</div>
+    </div>
+    <div class="hero-card hero-card-2">
+      <div class="card-label">Latest Certification</div>
+      <div class="card-value">Gen AI Advanced</div>
+      <div class="card-sub">AWS Entrena Paraguay · 2026</div>
+    </div>
+    <div class="hero-card hero-card-3">
+      <div class="card-label">Specialization</div>
+      <div class="card-value">n8n + OpenAI API</div>
+      <div class="card-sub">Production automations</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">n8n Automation</span>
+    <span class="ticker-item">Active Directory</span>
+    <span class="ticker-item">OpenAI API</span>
+    <span class="ticker-item">Kaspersky EDR</span>
+    <span class="ticker-item">GxP / FDA 21 CFR</span>
+    <span class="ticker-item">AWS Gen AI</span>
+    <span class="ticker-item">Python</span>
+    <span class="ticker-item">SQL Server</span>
+    <span class="ticker-item">Power BI</span>
+    <span class="ticker-item">Linux</span>
+    <span class="ticker-item">Telegram Bot API</span>
+    <span class="ticker-item">IT Infrastructure</span>
+    <span class="ticker-item">n8n Automation</span>
+    <span class="ticker-item">Active Directory</span>
+    <span class="ticker-item">OpenAI API</span>
+    <span class="ticker-item">Kaspersky EDR</span>
+    <span class="ticker-item">GxP / FDA 21 CFR</span>
+    <span class="ticker-item">AWS Gen AI</span>
+    <span class="ticker-item">Python</span>
+    <span class="ticker-item">SQL Server</span>
+    <span class="ticker-item">Power BI</span>
+    <span class="ticker-item">Linux</span>
+    <span class="ticker-item">Telegram Bot API</span>
+    <span class="ticker-item">IT Infrastructure</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="about-text fade-up">
+    <div class="section-label"><span class="section-num">01</span> About</div>
+    <p>I'm an IT Systems Engineer based in <strong>Asunción, Paraguay</strong>, with 4+ years building and automating systems in corporate and industrial environments.</p>
+    <p>Currently at <strong>Grupo Heisecke</strong>, I work across a pharmaceutical manufacturing plant, corporate offices, and retail points — handling everything from <em>Active Directory architecture</em> to AI-powered automation workflows running in production.</p>
+    <p>I built a <strong>real production bot</strong> on Telegram + n8n that manages IT tickets, and I'm developing <strong>FAS</strong>, a full GxP-compliant invoice approval system from scratch.</p>
+  </div>
+  <div class="about-right fade-up">
+    <div class="about-card">
+      <div class="about-card-title">🤖 AI & Automation</div>
+      <div class="about-card-text">n8n workflows in production, OpenAI API integrations, Telegram bots, multi-channel notification systems and stateful conversation architectures.</div>
+    </div>
+    <div class="about-card">
+      <div class="about-card-title">🛡️ Infrastructure & Security</div>
+      <div class="about-card-text">Active Directory administration (users, GPOs, OUs), Kaspersky Security Center endpoint management, Hillstone firewall and multilevel IT support.</div>
+    </div>
+    <div class="about-card">
+      <div class="about-card-title">🏭 GxP / FDA Compliance</div>
+      <div class="about-card-text">Computerized system validation under FDA 21 CFR Part 11 and EU Annex 11. Data integrity, audit trails and access control in pharmaceutical environments.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="section-label fade-up"><span class="section-num">02</span> Tech Stack</div>
+  <div class="section-title fade-up">TOOLS &<br>TECHNOLOGIES</div>
+  <br><br>
+  <div class="stack-grid fade-up">
+    <div class="stack-item primary"><span class="stack-icon">⚡</span><div class="stack-name">n8n</div></div>
+    <div class="stack-item primary"><span class="stack-icon">🤖</span><div class="stack-name">OpenAI API</div></div>
+    <div class="stack-item primary"><span class="stack-icon">🪟</span><div class="stack-name">Active Directory</div></div>
+    <div class="stack-item primary"><span class="stack-icon">🛡️</span><div class="stack-name">Kaspersky</div></div>
+    <div class="stack-item"><span class="stack-icon">🐍</span><div class="stack-name">Python</div></div>
+    <div class="stack-item"><span class="stack-icon">🗄️</span><div class="stack-name">SQL Server</div></div>
+    <div class="stack-item"><span class="stack-icon">☁️</span><div class="stack-name">AWS</div></div>
+    <div class="stack-item"><span class="stack-icon">📊</span><div class="stack-name">Power BI</div></div>
+    <div class="stack-item"><span class="stack-icon">🐧</span><div class="stack-name">Linux</div></div>
+    <div class="stack-item"><span class="stack-icon">🐙</span><div class="stack-name">GitHub</div></div>
+    <div class="stack-item"><span class="stack-icon">📱</span><div class="stack-name">Telegram API</div></div>
+    <div class="stack-item"><span class="stack-icon">🔥</span><div class="stack-name">Hillstone</div></div>
+    <div class="stack-item"><span class="stack-icon">📋</span><div class="stack-name">Jira</div></div>
+    <div class="stack-item"><span class="stack-icon">💼</span><div class="stack-name">SAP</div></div>
+    <div class="stack-item"><span class="stack-icon">🗺️</span><div class="stack-name">ArcGIS</div></div>
+    <div class="stack-item"><span class="stack-icon">☁️</span><div class="stack-name">Office 365</div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label fade-up"><span class="section-num">03</span> Experience</div>
+  <div class="section-title fade-up">WHERE I'VE<br>WORKED</div>
+  <br><br>
+  <div class="exp-list">
+
+    <div class="exp-item fade-up">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">Grupo Heisecke & Cia.</div>
+          <div class="exp-role">IT Systems & Infrastructure Engineer</div>
+        </div>
+        <div>
+          <div class="exp-period">Jun 2025 — Present</div>
+          <div class="exp-current"><span class="status-dot"></span>Active</div>
+        </div>
+      </div>
+      <div class="exp-body">
+        <ul class="exp-bullets">
+          <li>Active Directory administration: users, security groups, GPOs, OUs, permissions and access auditing from console.</li>
+          <li>Endpoint security management with Kaspersky Security Center: agent deployment, policy configuration, application control and incident response.</li>
+          <li>Built and deployed n8n automation workflows in production: Telegram IT helpdesk bot with email and spreadsheet integrations.</li>
+          <li>IT asset inventory, print servers and level 1-2 support across industrial plant (FUSQUIM), corporate offices and retail points.</li>
+          <li>Participation in computerized system validation under FDA 21 CFR Part 11 and EU Annex 11.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-up">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">LA OFFI S.A.</div>
+          <div class="exp-role">IT Support · GIS Technician · Admin Assistant</div>
+        </div>
+        <div class="exp-period">Jul 2023 — Jun 2025</div>
+      </div>
+      <div class="exp-body">
+        <ul class="exp-bullets">
+          <li>Level 1-2 IT support: PCs, laptops, network printers, routers and switches in corporate environments.</li>
+          <li>GIS-based field survey monitoring with ArcGIS for the Ministry of Agriculture and Livestock (ENA 2025).</li>
+          <li>Administrative management with IPS, BCP, MTESS — electronic invoicing and regulatory compliance.</li>
+          <li>Recruitment and selection: job posting, interview coordination and candidate management in Manatal ATS.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-up">
+      <div class="exp-header">
+        <div>
+          <div class="exp-company">ANDE</div>
+          <div class="exp-role">IT Infrastructure Intern</div>
+        </div>
+        <div class="exp-period">Oct — Dec 2021 · 240h</div>
+      </div>
+      <div class="exp-body">
+        <ul class="exp-bullets">
+          <li>Network infrastructure installation and configuration: routers, switches and perimeter security — 240 certified hours.</li>
+          <li>LAN/WAN connectivity troubleshooting and performance optimization.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label fade-up"><span class="section-num">04</span> Projects</div>
+  <div class="section-title fade-up">WHAT I'VE<br>BUILT</div>
+  <br><br>
+  <div class="projects-grid">
+
+    <div class="project-card featured fade-up">
+      <div>
+        <div class="project-num">01</div>
+        <div class="project-badge badge-prod"><span class="status-dot"></span>In Production</div>
+        <div class="project-name">IT HELPDESK BOT</div>
+        <p class="project-desc">
+          Stateful n8n workflow running in production at Grupo Heisecke. Employees report IT issues via Telegram — the bot guides them through a structured conversation, validates all data in real time (IP, email, phone), registers the ticket automatically and notifies the IT team via email. Built with a switch-step architecture for robust multi-scenario handling.
+        </p>
+        <div class="project-tags">
+          <span class="tag">n8n</span>
+          <span class="tag">Telegram Bot API</span>
+          <span class="tag">Email Integration</span>
+          <span class="tag">Google Sheets</span>
+          <span class="tag">Stateful Architecture</span>
+        </div>
+      </div>
+      <div class="project-visual">
+        <div class="vis-cell highlight">
+          <div class="vis-cell-label">Status</div>
+          <div class="vis-cell-val">● Production V2</div>
+        </div>
+        <div class="vis-cell">
+          <div class="vis-cell-label">Engine</div>
+          <div class="vis-cell-val">n8n Published</div>
+        </div>
+        <div class="vis-cell">
+          <div class="vis-cell-label">Interface</div>
+          <div class="vis-cell-val">Telegram Bot</div>
+        </div>
+        <div class="vis-cell">
+          <div class="vis-cell-label">Architecture</div>
+          <div class="vis-cell-val">Switch-Step</div>
+        </div>
+        <div class="vis-cell">
+          <div class="vis-cell-label">Validation</div>
+          <div class="vis-cell-val">Real-time</div>
+        </div>
+        <div class="vis-cell highlight">
+          <div class="vis-cell-label">Output</div>
+          <div class="vis-cell-val">Auto-registered</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">02</div>
+      <div class="project-badge badge-dev">⚙ In Development</div>
+      <div class="project-name">FAS — FUSQUIM APPROVAL SYSTEM</div>
+      <p class="project-desc">
+        Web-based invoice approval system for Grupo Heisecke / FUSQUIM. Multi-role auth (Vendor / Assistant / Approver / Admin), two-level approval workflow, full audit logs with timestamps, Excel export and SAP integration. Designed to meet GxP / FDA 21 CFR Part 11 traceability requirements.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL Server</span>
+        <span class="tag">Web App</span>
+        <span class="tag">SAP Integration</span>
+        <span class="tag">GxP / FDA</span>
+      </div>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">03</div>
+      <div class="project-badge badge-prod"><span class="status-dot"></span>Production</div>
+      <div class="project-name">GIS FIELD MONITORING</div>
+      <p class="project-desc">
+        Geospatial monitoring system for field surveys conducted for Paraguay's Ministry of Agriculture and Livestock (ENA 2025). Real-time verification that surveys were conducted in assigned geographic zones using ArcGIS.
+      </p>
+      <div class="project-tags">
+        <span class="tag">ArcGIS</span>
+        <span class="tag">GIS / SIG</span>
+        <span class="tag">Government</span>
+        <span class="tag">ENA 2025</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+  <div class="section-label fade-up"><span class="section-num">05</span> Certifications</div>
+  <div class="section-title fade-up">23+ LICENSES<br>& CERTS</div>
+  <br><br>
+  <div class="certs-grid fade-up">
+    <div class="cert-card">
+      <div class="cert-issuer">AWS Entrena Paraguay</div>
+      <div class="cert-name">Generative AI Advanced</div>
+      <div class="cert-year">2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">AWS Entrena Paraguay</div>
+      <div class="cert-name">AI and Cloud for Business</div>
+      <div class="cert-year">2026</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">Udemy · 19h</div>
+      <div class="cert-name">N8N: Automations & AI Agents</div>
+      <div class="cert-year">2025</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">Udemy · 48.5h</div>
+      <div class="cert-name">Active Directory: Zero to Enterprise Architect</div>
+      <div class="cert-year">2025</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">Soluciones GxP / CIFARMA · 20h</div>
+      <div class="cert-name">GxP / FDA 21 CFR Part 11 — System Validation</div>
+      <div class="cert-year">2025</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">LinkedIn Learning</div>
+      <div class="cert-name">Intro to AI & Generative AI</div>
+      <div class="cert-year">2024</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">LinkedIn Learning</div>
+      <div class="cert-name">Cybersecurity — Incident Management</div>
+      <div class="cert-year">2024</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">LinkedIn Learning</div>
+      <div class="cert-name">CompTIA A+ · Power BI · DevOps</div>
+      <div class="cert-year">2024</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-issuer">LinkedIn Learning</div>
+      <div class="cert-name">Business English for Professionals</div>
+      <div class="cert-year">2024</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-eyebrow fade-up">Let's work together</div>
+  <div class="contact-title fade-up">
+    GET IN<br><span class="outline">TOUCH</span>
+  </div>
+  <p class="contact-sub fade-up">Open to remote positions, freelance projects and international opportunities.</p>
+  <div class="contact-links fade-up">
+    <a href="mailto:mauriciogonzalezbenitez10@gmail.com" class="contact-link">✉ Email</a>
+    <a href="https://linkedin.com/in/gonzlezmauri" target="_blank" class="contact-link">💼 LinkedIn</a>
+    <a href="https://github.com/MauriGonza" target="_blank" class="contact-link">🐙 GitHub</a>
+    <a href="tel:+595972272644" class="contact-link">📱 +595 972 272-644</a>
+  </div>
+</div>
+
+<footer>
+  <div>© 2026 Mauricio González Benítez</div>
+  <div>IT Systems Engineer · Asunción, Paraguay</div>
+  <div>mauriciogonzalezbenitez10@gmail.com</div>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+  cursor.style.left = mx - 4 + 'px';
+  cursor.style.top = my - 4 + 'px';
+  ring.style.left = rx - 18 + 'px';
+  ring.style.top = ry - 18 + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Fade up on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
