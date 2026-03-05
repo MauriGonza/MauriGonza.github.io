@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mauricio González — IT Systems Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07080f;
+  --surface: #0d0e1a;
+  --border: #1a1b2e;
+  --green: #00e676;
+  --blue: #4488ff;
+  --lila: #9c6bff;
+  --orange: #ff6d3b;
+  --text: #d8d6f0;
+  --muted: #9a9ab8;
+  --white: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.6; overflow-x:hidden; cursor:none; }
+
+/* CURSOR */
+#cur { width:10px; height:10px; background:var(--green); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; mix-blend-mode:screen; transform:translate(-50%,-50%); transition:transform 0.1s; }
+#cur-ring { width:36px; height:36px; border:1.5px solid var(--lila); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; opacity:0.6; transform:translate(-50%,-50%); transition:left 0.12s ease, top 0.12s ease; }
+a, button { cursor:none; }
+
+/* LANG TOGGLE */
+.lang-toggle { position:fixed; top:20px; right:24px; z-index:1000; display:flex; border:1px solid var(--border); }
+.lb { padding:7px 16px; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; border:none; background:transparent; color:var(--muted); cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+.lb.active { background:var(--green); color:#000; font-weight:600; }
+
+/* SIDE NAV */
+.snav { position:fixed; left:24px; top:50%; transform:translateY(-50%); z-index:100; display:flex; flex-direction:column; gap:20px; }
+.snav a { display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--muted); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; transition:color 0.3s; }
+.snav a .dot { width:6px; height:6px; border-radius:50%; border:1px solid currentColor; transition:all 0.3s; flex-shrink:0; }
+.snav a:hover, .snav a.active { color:var(--green); }
+.snav a.active .dot { background:var(--green); box-shadow:0 0 8px var(--green); }
+
+/* SECTIONS */
+section { min-height:100vh; padding:100px 120px; display:flex; flex-direction:column; justify-content:center; border-bottom:1px solid var(--border); }
+
+/* LABELS & TITLES */
+.slabel { font-size:9px; letter-spacing:0.28em; text-transform:uppercase; color:var(--green); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.slabel .n { color:var(--muted); }
+.stitle { font-family:'Playfair Display',serif; font-size:clamp(48px,6vw,84px); font-weight:900; line-height:0.88; color:var(--white); margin-bottom:40px; letter-spacing:-0.02em; }
+.stitle .it { font-style:italic; color:var(--lila); }
+
+/* HERO */
+#hero { min-height:100vh; display:grid; grid-template-columns:1fr 360px; padding:0 0 0 120px; border-bottom:1px solid var(--border); }
+.hero-l { display:flex; flex-direction:column; justify-content:center; padding:80px 60px 80px 0; }
+.hero-tag { font-size:9px; letter-spacing:0.28em; text-transform:uppercase; color:var(--green); margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+.hero-tag::before { content:''; width:24px; height:1px; background:var(--green); }
+.hero-name { font-family:'Playfair Display',serif; font-size:clamp(64px,8vw,116px); font-weight:900; line-height:0.85; color:var(--white); letter-spacing:-0.02em; margin-bottom:4px; }
+.hero-name .ghost { color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,0.2); }
+.hero-name .col { color:var(--lila); -webkit-text-stroke:0; }
+.hero-role { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin:20px 0 28px; }
+.hero-desc { font-family:'Playfair Display',serif; font-size:17px; font-style:italic; color:#cccae0; line-height:1.65; max-width:460px; margin-bottom:40px; }
+.hero-desc strong { color:var(--white); font-style:normal; font-weight:900; }
+.ctas { display:flex; gap:12px; flex-wrap:wrap; }
+.btn-g { display:inline-block; padding:13px 30px; background:var(--green); color:#000; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); transition:all 0.2s; }
+.btn-g:hover { background:var(--white); transform:translateY(-2px); }
+.btn-o { display:inline-block; padding:12px 30px; background:transparent; color:var(--text); font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; border:1px solid var(--border); transition:all 0.2s; }
+.btn-o:hover { border-color:var(--orange); color:var(--orange); }
+.hero-stats { display:flex; gap:36px; margin-top:48px; padding-top:36px; border-top:1px solid var(--border); }
+.sn { font-family:'Playfair Display',serif; font-size:44px; font-weight:900; color:var(--white); line-height:1; }
+.sn span { color:var(--green); }
+.sl { font-size:8px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+
+/* HERO RIGHT PANEL */
+.hero-r { background:var(--surface); border-left:1px solid var(--border); display:flex; flex-direction:column; justify-content:center; padding:48px 32px; gap:12px; position:relative; }
+.hero-r::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--green),var(--blue),var(--lila),var(--orange)); }
+.status-row { display:flex; align-items:center; gap:8px; padding:12px 14px; border:1px solid rgba(0,230,118,0.2); background:rgba(0,230,118,0.03); }
+.dot-pulse { width:7px; height:7px; border-radius:50%; background:var(--green); animation:blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.status-txt { font-size:9px; color:var(--green); letter-spacing:0.1em; }
+.pgrid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.pc { background:var(--bg); border:1px solid var(--border); padding:14px 13px; transition:border-color 0.3s; }
+.pc:hover { border-color:var(--green); }
+.pc-l { font-size:7px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+.pc-v { font-size:11px; font-weight:600; }
+.pc-v.g{color:var(--green);} .pc-v.l{color:var(--lila);} .pc-v.b{color:var(--blue);} .pc-v.o{color:var(--orange);}
+.hero-inf { background:var(--bg); border:1px solid var(--border); padding:20px; text-align:center; }
+.inf-big { font-family:'Playfair Display',serif; font-size:48px; font-weight:900; color:var(--white); }
+.inf-big span{color:var(--green);}
+.inf-small { font-size:8px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+
+/* TICKER */
+.ticker-wrap { overflow:hidden; background:var(--green); padding:10px 0; }
+.ticker-inner { display:flex; width:max-content; animation:ticka 30s linear infinite; }
+@keyframes ticka { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+.ti { white-space:nowrap; padding:0 24px; font-family:'Playfair Display',serif; font-size:14px; font-weight:900; font-style:italic; color:#000; }
+.ti::after { content:' ◆ '; opacity:0.3; font-style:normal; }
+
+/* ABOUT */
+#sobre { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.abody p { font-family:'Playfair Display',serif; font-size:17px; line-height:1.8; color:#cccae0; margin-bottom:16px; }
+.abody p strong { color:var(--white); font-weight:900; }
+.abody p em { color:var(--green); font-style:normal; }
+.acards { display:flex; flex-direction:column; gap:10px; }
+.acard { border:1px solid var(--border); padding:20px 22px; background:var(--surface); position:relative; overflow:hidden; transition:transform 0.25s; }
+.acard::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; }
+.acard.g::before{background:var(--green);} .acard.b::before{background:var(--blue);} .acard.o::before{background:var(--orange);}
+.acard:hover { transform:translateX(4px); }
+.acard-t { font-size:9px; letter-spacing:0.16em; text-transform:uppercase; margin-bottom:6px; font-weight:600; }
+.acard.g .acard-t{color:var(--green);} .acard.b .acard-t{color:var(--blue);} .acard.o .acard-t{color:var(--orange);}
+.acard-d { font-size:12px; color:#cccae0; line-height:1.65; }
+
+/* STACK */
+.sgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:48px; }
+.si { background:var(--bg); padding:20px 12px; text-align:center; transition:background 0.2s; position:relative; overflow:hidden; }
+.si::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; transform:scaleX(0); transition:transform 0.3s; }
+.si.sg::after{background:var(--green);} .si.sb::after{background:var(--blue);} .si.sl::after{background:var(--lila);} .si.so::after{background:var(--orange);}
+.si:hover { background:var(--surface); }
+.si:hover::after { transform:scaleX(1); }
+.si.p { background:var(--surface); }
+.si-i { font-size:22px; margin-bottom:7px; display:block; }
+.si-n { font-size:8px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); transition:color 0.2s; }
+.si.p .si-n, .si:hover .si-n { color:var(--text); }
+
+/* EXPERIENCE */
+.exp-wrap { display:flex; flex-direction:column; gap:2px; margin-top:48px; }
+.exp-item { border:1px solid var(--border); background:var(--surface); transition:border-color 0.3s; overflow:hidden; }
+.exp-item:hover { border-color:var(--lila); }
+.exp-top { display:grid; grid-template-columns:1fr auto; gap:16px; padding:22px 28px; align-items:start; }
+.exp-co { font-family:'Playfair Display',serif; font-size:24px; font-weight:900; color:var(--white); margin-bottom:4px; }
+.exp-ro { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--lila); }
+.exp-per { font-size:9px; color:var(--muted); text-align:right; }
+.exp-badge { display:inline-block; margin-top:6px; font-size:7px; letter-spacing:0.14em; text-transform:uppercase; padding:2px 8px; border:1px solid var(--green); color:var(--green); }
+.exp-body { padding:0 28px 20px; border-top:1px solid var(--border); }
+.exp-ul { list-style:none; padding-top:14px; }
+.exp-ul li { padding:4px 0 4px 16px; position:relative; font-size:12px; color:#cccae0; line-height:1.7; border-bottom:1px solid rgba(255,255,255,0.025); }
+.exp-ul li::before { content:'→'; position:absolute; left:0; color:var(--green); font-size:10px; top:5px; }
+
+/* PROJECTS */
+.pgrid2 { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); margin-top:48px; }
+.pc2 { background:var(--bg); padding:36px 30px; display:flex; flex-direction:column; position:relative; overflow:hidden; transition:background 0.3s; }
+.pc2:hover { background:var(--surface); }
+.pc2.feat { grid-column:1/-1; background:var(--surface); display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+.pc2::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; transform:scaleX(0); transition:transform 0.4s; transform-origin:left; }
+.pc2.feat::before { background:var(--blue); transform:scaleX(1); }
+.pc2:not(.feat):hover::before { transform:scaleX(1); }
+.pc2:nth-child(2)::before { background:var(--orange); }
+.pnum { font-family:'Playfair Display',serif; font-size:64px; font-weight:900; color:var(--border); line-height:1; margin-bottom:10px; transition:color 0.3s; }
+.pc2:hover .pnum { color:rgba(0,230,118,0.06); }
+.pbadge { display:inline-flex; align-items:center; gap:5px; font-size:7px; letter-spacing:0.18em; text-transform:uppercase; padding:3px 9px; margin-bottom:12px; font-weight:600; }
+.pbg { color:var(--green); border:1px solid var(--green); background:rgba(0,230,118,0.04); }
+.pbo { color:var(--orange); border:1px solid var(--orange); background:rgba(255,109,59,0.04); }
+.pname { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:var(--white); line-height:1.05; margin-bottom:12px; }
+.pdesc { font-size:12px; color:#cccae0; line-height:1.8; margin-bottom:20px; flex:1; }
+.ptags { display:flex; flex-wrap:wrap; gap:5px; margin-top:auto; }
+.ptag { font-size:7px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; border:1px solid var(--border); color:var(--muted); transition:all 0.2s; }
+.pc2:hover .ptag { border-color:rgba(0,230,118,0.2); color:var(--text); }
+.pvis { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
+.pvc { background:var(--bg); border:1px solid var(--border); padding:11px 12px; }
+.pvc.hl { border-color:rgba(0,230,118,0.3); }
+.pvc-l { font-size:7px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.pvc-v { font-size:10px; color:var(--text); }
+.pvc.hl .pvc-v { color:var(--green); }
+
+/* CERTS */
+.cgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--border); margin-top:48px; }
+.cc { background:var(--bg); padding:22px; position:relative; overflow:hidden; transition:background 0.3s; }
+.cc:hover { background:var(--surface); }
+.cc::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
+.cc:nth-child(3n+1)::after{background:var(--green);}
+.cc:nth-child(3n+2)::after{background:var(--blue);}
+.cc:nth-child(3n)::after{background:var(--lila);}
+.cc:hover::after { transform:scaleX(1); }
+.ciss { font-size:7px; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:7px; }
+.cname { font-family:'Playfair Display',serif; font-size:14px; font-weight:900; color:var(--white); line-height:1.3; margin-bottom:5px; }
+.cyear { font-size:8px; color:var(--muted); }
+
+/* CONTACT */
+#contacto { align-items:center; text-align:center; position:relative; overflow:hidden; }
+#contacto::before { content:''; position:absolute; width:600px; height:300px; background:radial-gradient(ellipse,rgba(156,107,255,0.06) 0%,transparent 70%); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; }
+.ctitle { font-family:'Playfair Display',serif; font-size:clamp(56px,9vw,118px); font-weight:900; line-height:0.85; color:var(--white); margin-bottom:22px; }
+.ctitle .it { font-style:italic; color:var(--green); }
+.ctitle .out { display:block; color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,0.15); }
+.csub { font-family:'Playfair Display',serif; font-style:italic; font-size:17px; color:var(--muted); margin-bottom:44px; max-width:480px; }
+.clinks { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+.clink { display:flex; align-items:center; gap:7px; padding:12px 22px; border:1px solid var(--border); color:var(--text); text-decoration:none; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; transition:all 0.3s; }
+.clink:hover { border-color:var(--green); color:var(--green); }
+
+/* FOOTER */
+footer { border-top:1px solid var(--border); padding:20px 120px; display:flex; justify-content:space-between; font-size:8px; color:var(--muted); letter-spacing:0.1em; }
+
+/* REVEAL */
+.rev { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
+.rev.on { opacity:1; transform:translateY(0); }
+
+/* LANG */
+.es-txt { display:block; }
+.en-txt { display:none; }
+body.en .es-txt { display:none; }
+body.en .en-txt { display:block; }
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .snav{display:none;}
+  section,#hero{padding:80px 24px;}
+  #hero{grid-template-columns:1fr;}
+  .hero-r{display:none;}
+  #sobre{grid-template-columns:1fr;gap:40px;}
+  .pgrid2{grid-template-columns:1fr;}
+  .pc2.feat{grid-template-columns:1fr;}
+  .cgrid{grid-template-columns:1fr 1fr;}
+  footer{padding:18px 24px;flex-direction:column;gap:6px;}
+  .lang-toggle{top:14px;right:14px;}
+}
+</style>
+</head>
+<body id="body">
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- LANG TOGGLE -->
+<div class="lang-toggle">
+  <button class="lb active" id="bEs" onclick="setLang('es')">ES</button>
+  <button class="lb" id="bEn" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- SIDE NAV -->
+<nav class="snav" id="snav">
+  <a href="#hero" class="active"><span class="dot"></span><span class="es-txt">Inicio</span><span class="en-txt">Home</span></a>
+  <a href="#sobre"><span class="dot"></span><span class="es-txt">Sobre mí</span><span class="en-txt">About</span></a>
+  <a href="#stack"><span class="dot"></span>Stack</a>
+  <a href="#exp"><span class="dot"></span><span class="es-txt">Experiencia</span><span class="en-txt">Experience</span></a>
+  <a href="#proj"><span class="dot"></span><span class="es-txt">Proyectos</span><span class="en-txt">Projects</span></a>
+  <a href="#certs"><span class="dot"></span><span class="es-txt">Certs</span><span class="en-txt">Certs</span></a>
+  <a href="#contacto"><span class="dot"></span><span class="es-txt">Contacto</span><span class="en-txt">Contact</span></a>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-l">
+    <div class="hero-tag rev"><span class="es-txt">Disponible para trabajo remoto</span><span class="en-txt">Available for remote work</span></div>
+    <h1 class="hero-name rev">
+      <div>MAURICIO</div>
+      <div class="ghost">GONZ<span class="col">Á</span>LEZ</div>
+    </h1>
+    <div class="hero-role rev"><span class="es-txt">IT Systems Engineer · Automatización IA · Active Directory · GxP/FDA</span><span class="en-txt">IT Systems Engineer · AI Automation · Active Directory · GxP/FDA</span></div>
+    <p class="hero-desc rev">
+      <span class="es-txt">Construyo <strong>sistemas reales en producción</strong> — desde bots de IA hasta sistemas con compliance farmacéutico. Actualmente en <strong>Grupo Heisecke / FUSQUIM</strong>, Asunción, Paraguay.</span>
+      <span class="en-txt">I build <strong>real production systems</strong> — from AI bots to GxP-compliant platforms. Currently at <strong>Grupo Heisecke / FUSQUIM</strong>, Asunción, Paraguay.</span>
+    </p>
+    <div class="ctas rev">
+      <a href="#proj" class="btn-g"><span class="es-txt">Ver Proyectos</span><span class="en-txt">View Projects</span></a>
+      <a href="#contacto" class="btn-o"><span class="es-txt">Contacto</span><span class="en-txt">Contact</span></a>
+    </div>
+    <div class="hero-stats rev">
+      <div><div class="sn">1<span>+</span></div><div class="sl"><span class="es-txt">Años exp.</span><span class="en-txt">Yrs exp.</span></div></div>
+      <div><div class="sn">23<span>+</span></div><div class="sl"><span class="es-txt">Certificaciones</span><span class="en-txt">Certifications</span></div></div>
+      <div><div class="sn">3</div><div class="sl"><span class="es-txt">Empresas</span><span class="en-txt">Companies</span></div></div>
+    </div>
+  </div>
+  <div class="hero-r rev">
+    <div class="status-row">
+      <div class="dot-pulse"></div>
+      <div class="status-txt"><span class="es-txt">Activo · Grupo Heisecke / FUSQUIM</span><span class="en-txt">Active · Grupo Heisecke / FUSQUIM</span></div>
+    </div>
+    <div class="pgrid">
+      <div class="pc"><div class="pc-l"><span class="es-txt">Especialización</span><span class="en-txt">Specialization</span></div><div class="pc-v g">n8n + OpenAI</div></div>
+      <div class="pc"><div class="pc-l"><span class="es-txt">Certificaciones</span><span class="en-txt">Certifications</span></div><div class="pc-v l">23+</div></div>
+      <div class="pc"><div class="pc-l"><span class="es-txt">Último cert.</span><span class="en-txt">Latest cert.</span></div><div class="pc-v o">AWS GenAI '26</div></div>
+      <div class="pc"><div class="pc-l">Compliance</div><div class="pc-v b">GxP / FDA</div></div>
+    </div>
+    <div class="hero-inf">
+      <div class="inf-big">∞<span>+</span></div>
+      <div class="inf-small"><span class="es-txt">Automatizaciones en producción</span><span class="en-txt">Production automations</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ti">n8n Automation</span><span class="ti">Active Directory</span><span class="ti">OpenAI API</span><span class="ti">Kaspersky EDR</span><span class="ti">GxP / FDA 21 CFR</span><span class="ti">AWS Gen AI</span><span class="ti">Python</span><span class="ti">SQL Server</span><span class="ti">Telegram Bot API</span><span class="ti">IT Infrastructure</span>
+    <span class="ti">n8n Automation</span><span class="ti">Active Directory</span><span class="ti">OpenAI API</span><span class="ti">Kaspersky EDR</span><span class="ti">GxP / FDA 21 CFR</span><span class="ti">AWS Gen AI</span><span class="ti">Python</span><span class="ti">SQL Server</span><span class="ti">Telegram Bot API</span><span class="ti">IT Infrastructure</span>
+  </div>
+</div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre">
+  <div class="abody rev">
+    <div class="slabel"><span class="n">01</span><span class="es-txt">Sobre mí</span><span class="en-txt">About me</span></div>
+    <div class="stitle es-txt">QUIÉN<br>SOY <span class="it">YO</span></div>
+    <div class="stitle en-txt">WHO<br>I <span class="it">AM</span></div>
+    <p><span class="es-txt">Soy <strong>IT Systems Engineer</strong> con 1+ año de experiencia en entornos corporativos e industriales, especializado en <em>automatización con IA</em>, infraestructura y compliance GxP/FDA.</span><span class="en-txt">I'm an <strong>IT Systems Engineer</strong> with 1+ year of experience in corporate and industrial environments, specializing in <em>AI-powered automation</em>, infrastructure and GxP/FDA compliance.</span></p>
+    <p><span class="es-txt">Actualmente en <strong>Grupo Heisecke / FUSQUIM</strong> — planta farmacéutica en Asunción — gestionando Active Directory, seguridad endpoint y construyendo automatizaciones n8n en producción.</span><span class="en-txt">Currently at <strong>Grupo Heisecke / FUSQUIM</strong> — pharmaceutical plant in Asunción — managing Active Directory, endpoint security and building n8n automations running in production daily.</span></p>
+    <p><span class="es-txt">Estudiante de <strong>Ingeniería en Informática</strong> en UNIDA (4° año). AWS Gen AI Advanced 2026.</span><span class="en-txt">4th year <strong>Computer Engineering</strong> student at UNIDA. AWS Gen AI Advanced certified 2026.</span></p>
+  </div>
+  <div class="acards rev">
+    <div class="acard g"><div class="acard-t">🤖 <span class="es-txt">Automatización & IA</span><span class="en-txt">AI & Automation</span></div><div class="acard-d"><span class="es-txt">Flujos n8n en producción, OpenAI API, bots Telegram con arquitectura stateful y notificaciones multicanal.</span><span class="en-txt">n8n workflows in production, OpenAI API, stateful Telegram bots and multi-channel notifications.</span></div></div>
+    <div class="acard b"><div class="acard-t">🛡️ <span class="es-txt">Infraestructura & Seguridad</span><span class="en-txt">Infrastructure & Security</span></div><div class="acard-d"><span class="es-txt">Active Directory (usuarios, GPOs, OUs), Kaspersky Security Center, firewall Hillstone y soporte multinivel en planta farmacéutica.</span><span class="en-txt">Active Directory (users, GPOs, OUs), Kaspersky Security Center, Hillstone firewall and multilevel IT support in a pharmaceutical plant.</span></div></div>
+    <div class="acard o"><div class="acard-t">🏭 GxP / FDA Compliance</div><div class="acard-d"><span class="es-txt">Validación de sistemas bajo FDA 21 CFR Part 11 y UE Anexo 11. Trazabilidad e integridad de datos en entornos regulados.</span><span class="en-txt">System validation under FDA 21 CFR Part 11 and EU Annex 11. Data integrity and audit trails in regulated environments.</span></div></div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="rev">
+    <div class="slabel"><span class="n">02</span> Stack</div>
+    <div class="stitle es-txt">HERRAMIENTAS<br>& <span class="it">TECNOLOGÍAS</span></div>
+    <div class="stitle en-txt">TOOLS &<br><span class="it">TECHNOLOGIES</span></div>
+  </div>
+  <div class="sgrid rev">
+    <div class="si p sg"><span class="si-i">⚡</span><div class="si-n">n8n</div></div>
+    <div class="si p sg"><span class="si-i">🤖</span><div class="si-n">OpenAI API</div></div>
+    <div class="si p sb"><span class="si-i">🪟</span><div class="si-n">Active Dir.</div></div>
+    <div class="si p sb"><span class="si-i">🛡️</span><div class="si-n">Kaspersky</div></div>
+    <div class="si sl"><span class="si-i">🐍</span><div class="si-n">Python</div></div>
+    <div class="si sl"><span class="si-i">🗄️</span><div class="si-n">SQL Server</div></div>
+    <div class="si so"><span class="si-i">☁️</span><div class="si-n">AWS</div></div>
+    <div class="si so"><span class="si-i">📊</span><div class="si-n">Power BI</div></div>
+    <div class="si sg"><span class="si-i">🐧</span><div class="si-n">Linux</div></div>
+    <div class="si sg"><span class="si-i">🐙</span><div class="si-n">GitHub</div></div>
+    <div class="si sb"><span class="si-i">📱</span><div class="si-n">Telegram API</div></div>
+    <div class="si sl"><span class="si-i">🔥</span><div class="si-n">Hillstone</div></div>
+    <div class="si so"><span class="si-i">💼</span><div class="si-n">SAP</div></div>
+    <div class="si sg"><span class="si-i">📋</span><div class="si-n">Jira</div></div>
+    <div class="si sb"><span class="si-i">☁️</span><div class="si-n">Office 365</div></div>
+    <div class="si sl"><span class="si-i">🗺️</span><div class="si-n">ArcGIS</div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCIA -->
+<section id="exp">
+  <div class="rev">
+    <div class="slabel"><span class="n">03</span><span class="es-txt">Experiencia</span><span class="en-txt">Experience</span></div>
+    <div class="stitle es-txt">DONDE HE<br><span class="it">TRABAJADO</span></div>
+    <div class="stitle en-txt">WHERE I'VE<br><span class="it">WORKED</span></div>
+  </div>
+  <div class="exp-wrap rev">
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-co">Grupo Heisecke & Cia.</div>
+          <div class="exp-ro">IT Systems & Infrastructure Engineer</div>
+        </div>
+        <div>
+          <div class="exp-per"><span class="es-txt">Jun 2025 — Actualidad</span><span class="en-txt">Jun 2025 — Present</span></div>
+          <div class="exp-badge">● <span class="es-txt">En curso</span><span class="en-txt">Active</span></div>
+        </div>
+      </div>
+      <div class="exp-body">
+        <ul class="exp-ul">
+          <li><span class="es-txt">Administración de Active Directory: usuarios, grupos, GPOs, OUs, permisos y auditoría de accesos.</span><span class="en-txt">Active Directory administration: users, groups, GPOs, OUs, permissions and access auditing.</span></li>
+          <li><span class="es-txt">Gestión de seguridad endpoint con Kaspersky Security Center: agentes, políticas y respuesta a incidentes.</span><span class="en-txt">Endpoint security with Kaspersky Security Center: agent deployment, policies and incident response.</span></li>
+          <li><span class="es-txt">Automatizaciones n8n en producción: bot IT vía Telegram con integración a email y planillas.</span><span class="en-txt">n8n automation in production: IT helpdesk bot via Telegram with email and spreadsheet integrations.</span></li>
+          <li><span class="es-txt">Soporte nivel 1-2 en planta FUSQUIM, oficinas y puntos de venta.</span><span class="en-txt">Level 1-2 IT support across FUSQUIM plant, corporate offices and retail points.</span></li>
+          <li><span class="es-txt">Validación de sistemas bajo FDA 21 CFR Part 11 y UE Anexo 11.</span><span class="en-txt">System validation under FDA 21 CFR Part 11 and EU Annex 11.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-co">LA OFFI S.A.</div>
+          <div class="exp-ro"><span class="es-txt">IT Support · Técnico SIG · Asistente Administrativo</span><span class="en-txt">IT Support · GIS Technician · Admin Assistant</span></div>
+        </div>
+        <div><div class="exp-per">Jul 2023 — Jun 2025</div></div>
+      </div>
+      <div class="exp-body">
+        <ul class="exp-ul">
+          <li><span class="es-txt">Soporte IT nivel 1-2: PCs, laptops, impresoras de red, routers y switches.</span><span class="en-txt">Level 1-2 IT support: PCs, laptops, network printers, routers and switches.</span></li>
+          <li><span class="es-txt">Monitoreo georreferenciado con ArcGIS para el Ministerio de Agricultura (ENA 2025).</span><span class="en-txt">GIS-based field monitoring with ArcGIS for the Ministry of Agriculture (ENA 2025).</span></li>
+          <li><span class="es-txt">Gestión administrativa ante IPS, BCP, MTESS — facturación electrónica y cumplimiento normativo.</span><span class="en-txt">Administrative management with IPS, BCP, MTESS — electronic invoicing and regulatory compliance.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-top">
+        <div>
+          <div class="exp-co">ANDE</div>
+          <div class="exp-ro"><span class="es-txt">Pasante — Dpto. TI & Redes</span><span class="en-txt">IT Infrastructure Intern</span></div>
+        </div>
+        <div><div class="exp-per"><span class="es-txt">Oct — Dic 2021 · 240h</span><span class="en-txt">Oct — Dec 2021 · 240h</span></div></div>
+      </div>
+      <div class="exp-body">
+        <ul class="exp-ul">
+          <li><span class="es-txt">Instalación y configuración de infraestructura de red: routers, switches — 240 horas certificadas.</span><span class="en-txt">Network infrastructure installation and configuration: routers, switches — 240 certified hours.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROYECTOS -->
+<section id="proj">
+  <div class="rev">
+    <div class="slabel"><span class="n">04</span><span class="es-txt">Proyectos</span><span class="en-txt">Projects</span></div>
+    <div class="stitle es-txt">LO QUE HE<br><span class="it">CONSTRUIDO</span></div>
+    <div class="stitle en-txt">WHAT I'VE<br><span class="it">BUILT</span></div>
+  </div>
+  <div class="pgrid2 rev">
+    <div class="pc2 feat">
+      <div>
+        <div class="pnum">01</div>
+        <div class="pbadge pbg">● <span class="es-txt">En Producción</span><span class="en-txt">In Production</span></div>
+        <div class="pname"><span class="es-txt">BOT IT HELPDESK<br>TELEGRAM + N8N</span><span class="en-txt">IT HELPDESK BOT<br>TELEGRAM + N8N</span></div>
+        <p class="pdesc"><span class="es-txt">Flujo n8n stateful en producción en Grupo Heisecke. El bot guía al empleado en una conversación estructurada, valida datos en tiempo real (IP, email, teléfono), registra el ticket automáticamente y notifica al equipo IT. Arquitectura switch-step.</span><span class="en-txt">Stateful n8n workflow running in production at Grupo Heisecke. Guides employees through structured conversation, validates data in real time (IP, email, phone), auto-registers tickets and notifies the IT team. Switch-step architecture.</span></p>
+        <div class="ptags"><span class="ptag">n8n</span><span class="ptag">Telegram Bot API</span><span class="ptag">Email</span><span class="ptag">Google Sheets</span></div>
+      </div>
+      <div class="pvis">
+        <div class="pvc hl"><div class="pvc-l"><span class="es-txt">Estado</span><span class="en-txt">Status</span></div><div class="pvc-v">● V2 Prod.</div></div>
+        <div class="pvc"><div class="pvc-l">Motor</div><div class="pvc-v">n8n</div></div>
+        <div class="pvc"><div class="pvc-l"><span class="es-txt">Interfaz</span><span class="en-txt">Interface</span></div><div class="pvc-v">Telegram Bot</div></div>
+        <div class="pvc"><div class="pvc-l">Arquitectura</div><div class="pvc-v">Switch-Step</div></div>
+        <div class="pvc"><div class="pvc-l"><span class="es-txt">Validación</span><span class="en-txt">Validation</span></div><div class="pvc-v"><span class="es-txt">Tiempo real</span><span class="en-txt">Real-time</span></div></div>
+        <div class="pvc hl"><div class="pvc-l"><span class="es-txt">Registro</span><span class="en-txt">Output</span></div><div class="pvc-v"><span class="es-txt">Automático</span><span class="en-txt">Auto</span></div></div>
+      </div>
+    </div>
+    <div class="pc2">
+      <div class="pnum">02</div>
+      <div class="pbadge pbo">⚙ <span class="es-txt">En Desarrollo</span><span class="en-txt">In Development</span></div>
+      <div class="pname">FAS — FUSQUIM<br>APPROVAL SYSTEM</div>
+      <p class="pdesc"><span class="es-txt">Sistema web de aprobación de facturas para Grupo Heisecke / FUSQUIM. Autenticación multirrol (Proveedor / Asistente / Aprobador / Admin), flujo de dos niveles, logs de auditoría, exportación Excel e integración SAP. GxP / FDA 21 CFR Part 11.</span><span class="en-txt">Web-based invoice approval system for Grupo Heisecke / FUSQUIM. Multi-role auth, two-level approval workflow, full audit logs, Excel export and SAP integration. GxP / FDA 21 CFR Part 11 compliant.</span></p>
+      <div class="ptags"><span class="ptag">Python</span><span class="ptag">SQL Server</span><span class="ptag">Web App</span><span class="ptag">SAP</span><span class="ptag">GxP/FDA</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICACIONES -->
+<section id="certs">
+  <div class="rev">
+    <div class="slabel"><span class="n">05</span><span class="es-txt">Certificaciones</span><span class="en-txt">Certifications</span></div>
+    <div class="stitle es-txt">23+ <span class="it">CERTIFICADOS</span></div>
+    <div class="stitle en-txt">23+ <span class="it">CERTIFICATIONS</span></div>
+  </div>
+  <div class="cgrid rev">
+    <div class="cc"><div class="ciss">AWS Entrena Paraguay</div><div class="cname">Generative AI Advanced</div><div class="cyear">2026</div></div>
+    <div class="cc"><div class="ciss">AWS Entrena Paraguay</div><div class="cname"><span class="es-txt">IA y Nube Para Empresas</span><span class="en-txt">AI and Cloud for Business</span></div><div class="cyear">2026</div></div>
+    <div class="cc"><div class="ciss">Udemy · 19h</div><div class="cname"><span class="es-txt">N8N: Automatizaciones & Agentes IA</span><span class="en-txt">N8N: Automations & AI Agents</span></div><div class="cyear">2025</div></div>
+    <div class="cc"><div class="ciss">Udemy · 48.5h</div><div class="cname"><span class="es-txt">Active Directory: Cero a Arquitecto</span><span class="en-txt">Active Directory: Zero to Architect</span></div><div class="cyear">2025</div></div>
+    <div class="cc"><div class="ciss">Soluciones GxP · 20h</div><div class="cname">GxP / FDA 21 CFR Part 11</div><div class="cyear">2025</div></div>
+    <div class="cc"><div class="ciss">LinkedIn Learning</div><div class="cname"><span class="es-txt">Intro a IA & Generative AI</span><span class="en-txt">Intro to AI & Generative AI</span></div><div class="cyear">2024</div></div>
+    <div class="cc"><div class="ciss">LinkedIn Learning</div><div class="cname"><span class="es-txt">Ciberseguridad — Incidentes</span><span class="en-txt">Cybersecurity — Incidents</span></div><div class="cyear">2024</div></div>
+    <div class="cc"><div class="ciss">LinkedIn Learning</div><div class="cname">CompTIA A+ · Power BI · DevOps</div><div class="cyear">2024</div></div>
+    <div class="cc"><div class="ciss">LinkedIn Learning</div><div class="cname">Business English for Professionals</div><div class="cyear">2024</div></div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="slabel rev" style="justify-content:center;"><span class="es-txt">Trabajemos juntos</span><span class="en-txt">Let's work together</span></div>
+  <div class="ctitle rev"><span class="it es-txt">HABLEMOS</span><span class="it en-txt">LET'S</span><span class="out es-txt">EN CONTACTO</span><span class="out en-txt">CONNECT</span></div>
+  <p class="csub rev"><span class="es-txt">Disponible para posiciones remotas, proyectos freelance y oportunidades internacionales.</span><span class="en-txt">Open to remote positions, freelance projects and international opportunities.</span></p>
+  <div class="clinks rev">
+    <a href="mailto:mauriciogonzalezbenitez10@gmail.com" class="clink">✉ Email</a>
+    <a href="https://linkedin.com/in/gonzlezmauri" target="_blank" class="clink">💼 LinkedIn</a>
+    <a href="https://github.com/MauriGonza" target="_blank" class="clink">🐙 GitHub</a>
+    <a href="tel:+595972272644" class="clink">📱 +595 972 272-644</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Mauricio González Benítez</div>
+  <div>IT Systems Engineer · Asunción, Paraguay</div>
+  <div>mauriciogonzalezbenitez10@gmail.com</div>
+</footer>
+
+<script>
+// CURSOR - mousemove only, no animation loop
+var curEl = document.getElementById('cur');
+var ringEl = document.getElementById('cur-ring');
+document.addEventListener('mousemove', function(e) {
+  curEl.style.left = e.clientX + 'px';
+  curEl.style.top = e.clientY + 'px';
+  ringEl.style.left = e.clientX + 'px';
+  ringEl.style.top = e.clientY + 'px';
+});
+
+// LANG TOGGLE - simple class on body
+function setLang(l) {
+  var b = document.getElementById('body');
+  if (l === 'en') { b.classList.add('en'); } else { b.classList.remove('en'); }
+  document.getElementById('bEs').classList.toggle('active', l === 'es');
+  document.getElementById('bEn').classList.toggle('active', l === 'en');
+}
+
+// SCROLL REVEAL - simple IntersectionObserver
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rev').forEach(function(el) { obs.observe(el); });
+
+// ACTIVE NAV
+var secs = document.querySelectorAll('section, #hero');
+var nlinks = document.querySelectorAll('.snav a');
+window.addEventListener('scroll', function() {
+  var cur = '';
+  secs.forEach(function(s) { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
+  nlinks.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+});
+</script>
+</body>
+</html>
